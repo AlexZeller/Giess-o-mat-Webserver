@@ -1,0 +1,24 @@
+{
+  "name": "giess-o-mat-webserver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AlexZeller/Giess-o-mat-Webserver.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AlexZeller/Giess-o-mat-Webserver/issues"
+  },
+  "homepage": "https://github.com/AlexZeller/Giess-o-mat-Webserver#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "log-timestamp": "^0.3.0",
+    "sqlite3": "^4.2.0"
+  }
+}
