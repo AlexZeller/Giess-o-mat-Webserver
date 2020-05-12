@@ -1,0 +1,12 @@
+[Unit]
+Description=Runs the webserver that serves the webapp and the api
+After=network.target
+
+[Service]
+Type=simple
+User=pi
+ExecStart=/usr/bin/node /home/pi/Giess-o-mat-Webserver/index.js
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

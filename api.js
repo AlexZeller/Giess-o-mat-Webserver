@@ -1,6 +1,8 @@
 module.exports = function (expressApp) {
   const sqlite = require('sqlite3').verbose();
-  const db = new sqlite.Database('./db.sqlite', (err) => {
+  const path = require('path')
+  const dbPath = path.resolve(__dirname, 'db.sqlite')
+  const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
       return console.log(err.message);
     }
@@ -30,8 +32,8 @@ module.exports = function (expressApp) {
     );
     db.all(
       `SELECT ? FROM sensor_data WHERE datetime(Timestamp) >=datetime('now', '-` +
-        hours +
-        ` Hour')`,
+      hours +
+      ` Hour')`,
       [sensor],
       (err, rows) => {
         if (err) {
