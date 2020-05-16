@@ -1,7 +1,6 @@
 module.exports = function (expressApp) {
   const sqlite = require('sqlite3').verbose();
-  const path = require('path')
-  const dbPath = path.resolve(__dirname, 'db.sqlite')
+  const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db'
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
       return console.log(err.message);
