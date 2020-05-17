@@ -2,7 +2,7 @@ module.exports = function (expressApp) {
   const SimpleNodeLogger = require('simple-node-logger'),
     opts = {
       logFilePath: './giessomat-apiserver.log',
-      timestampFormat: 'YYYY-MM-DD mm:ss.SSS',
+      timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
     };
 
   log = SimpleNodeLogger.createSimpleFileLogger(opts);
@@ -10,6 +10,8 @@ module.exports = function (expressApp) {
   const sqlite = require('sqlite3').verbose();
   const fs = require('fs');
   const light_settings_path = './light_settings.json';
+  const ventilation_settings_path = './ventilation_settings.json';
+  const irrigation_settings_path = './irrigation_settings.json';
   const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
@@ -53,19 +55,34 @@ module.exports = function (expressApp) {
     );
   });
 
-  expressApp.post('/settings/light', (req, res) => {
+  expressApp.post('/settings/:topic', (req, res) => {
+    let topic = req.params.topic;
+    let settings_path = '';
+    if (topic == 'light') {
+      settings_path = light_settings_path;
+    } else if (topic == 'ventilation') {
+      settings_path = ventilation_settings_path;
+    } else if (topic == 'irrigation') {
+      settings_path = irrigation_settings_path;
+    }
     log.debug(
       'POST ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
-    fs.writeFile(
-      light_settings_path,
-      JSON.stringify(req.body, null, 2),
-      function writeJSON(err) {
-        if (err) return log.error(err);
+
+    function writeSettings(path) {
+      fs.writeFile(path, JSON.stringify(req.body, null, 2), function writeJSON(
+        err
+      ) {
+        if (err) {
+          log.error(err);
+          res.sendStatus(500);
+        }
         log.info('Recieved new lighting settings:' + JSON.stringify(req.body));
-        log.debug('Writing settings to ' + light_settings_path);
-      }
-    );
-    res.sendStatus(200);
+        log.debug('Writing settings to ' + path);
+        res.sendStatus(200);
+      });
+    }
+
+    writeSettings(settings_path);
   });
 };
