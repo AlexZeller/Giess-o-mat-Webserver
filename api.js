@@ -1,22 +1,32 @@
 module.exports = function (expressApp) {
+  const SimpleNodeLogger = require('simple-node-logger'),
+    opts = {
+      logFilePath: './giessomat-apiserver.log',
+      timestampFormat: 'YYYY-MM-DD mm:ss.SSS',
+    };
+
+  log = SimpleNodeLogger.createSimpleFileLogger(opts);
+  log.setLevel('debug');
   const sqlite = require('sqlite3').verbose();
+  const fs = require('fs');
+  const light_settings_path = './light_settings.json';
   const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
-      return console.log(err.message);
+      return log.error(err.message);
     }
-    console.log('Connected to SQLite Database');
+    log.info('Connected to SQLite Database');
   });
 
   expressApp.get('/sensordata/current', (req, res) => {
-    console.log(
+    log.debug(
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
     db.get(
       `SELECT * FROM sensor_data ORDER BY Timestamp DESC LIMIT 1`,
       (err, row) => {
         if (err) {
-          return console.log(err.message);
+          return log.error(err.message);
         }
         res.json(row);
       }
@@ -26,7 +36,7 @@ module.exports = function (expressApp) {
   expressApp.get('/sensordata/:sensor/:hours', (req, res) => {
     let sensor = req.params.sensor;
     let hours = req.params.hours;
-    console.log(
+    log.debug(
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
     db.all(
@@ -36,7 +46,7 @@ module.exports = function (expressApp) {
       [sensor],
       (err, rows) => {
         if (err) {
-          return console.log(err.message);
+          return log.error(err.message);
         }
         res.json(rows);
       }
@@ -44,10 +54,18 @@ module.exports = function (expressApp) {
   });
 
   expressApp.post('/settings/light', (req, res) => {
-    console.log(
+    log.debug(
       'POST ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
-    console.log(req.body);
+    fs.writeFile(
+      light_settings_path,
+      JSON.stringify(req.body, null, 2),
+      function writeJSON(err) {
+        if (err) return log.error(err);
+        log.info('Recieved new lighting settings:' + JSON.stringify(req.body));
+        log.debug('Writing settings to ' + light_settings_path);
+      }
+    );
     res.sendStatus(200);
   });
 };

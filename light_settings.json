@@ -1,0 +1,7 @@
+{
+  "auto": true,
+  "mode": "Zeitsteuerung",
+  "start_time": "11:00",
+  "end_time": "09:30",
+  "lux_threshold": 5000
+}
