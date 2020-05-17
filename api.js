@@ -85,4 +85,21 @@ module.exports = function (expressApp) {
 
     writeSettings(settings_path);
   });
+
+  expressApp.get('/settings/:topic', (req, res) => {
+    let topic = req.params.topic;
+    let settings_path = '';
+    if (topic == 'light') {
+      settings_path = light_settings_path;
+    } else if (topic == 'ventilation') {
+      settings_path = ventilation_settings_path;
+    } else if (topic == 'irrigation') {
+      settings_path = irrigation_settings_path;
+    }
+    log.debug(
+      'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
+    );
+    let settings_file = require(settings_path);
+    res.json(settings_file);
+  });
 };
