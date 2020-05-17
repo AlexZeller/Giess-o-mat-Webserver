@@ -1,6 +1,6 @@
 module.exports = function (expressApp) {
   const sqlite = require('sqlite3').verbose();
-  const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db'
+  const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
       return console.log(err.message);
@@ -31,8 +31,8 @@ module.exports = function (expressApp) {
     );
     db.all(
       `SELECT ? FROM sensor_data WHERE datetime(Timestamp) >=datetime('now', '-` +
-      hours +
-      ` Hour')`,
+        hours +
+        ` Hour')`,
       [sensor],
       (err, rows) => {
         if (err) {
@@ -41,5 +41,13 @@ module.exports = function (expressApp) {
         res.json(rows);
       }
     );
+  });
+
+  expressApp.post('/settings/light', (req, res) => {
+    console.log(
+      'POST ' + req.protocol + '://' + req.get('host') + req.originalUrl
+    );
+    console.log(req.body);
+    res.sendStatus(200);
   });
 };
