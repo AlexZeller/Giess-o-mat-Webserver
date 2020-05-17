@@ -1,4 +1,5 @@
 module.exports = function (expressApp) {
+  // Set up a logger to write log output to a file
   const SimpleNodeLogger = require('simple-node-logger'),
     opts = {
       logFilePath: './giessomat-apiserver.log',
@@ -6,13 +7,18 @@ module.exports = function (expressApp) {
     };
 
   log = SimpleNodeLogger.createSimpleFileLogger(opts);
+  // Set log level to debug
   log.setLevel('debug');
+  // Load required dependencies
   const sqlite = require('sqlite3').verbose();
   const fs = require('fs');
+  // Define file paths for settings
   const light_settings_path = './light_settings.json';
   const ventilation_settings_path = './ventilation_settings.json';
   const irrigation_settings_path = './irrigation_settings.json';
+  // Define file path for SQLite database
   const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
+  // Connect to database
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
       return log.error(err.message);
@@ -20,6 +26,7 @@ module.exports = function (expressApp) {
     log.info('Connected to SQLite Database');
   });
 
+  // GET Method to query the latest sensor data and return as JSON
   expressApp.get('/sensordata/current', (req, res) => {
     log.debug(
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
@@ -35,6 +42,7 @@ module.exports = function (expressApp) {
     );
   });
 
+  // GET Method to query the the sensor data of a specific sensor in for the last x hours and return as JSON
   expressApp.get('/sensordata/:sensor/:hours', (req, res) => {
     let sensor = req.params.sensor;
     let hours = req.params.hours;
@@ -55,6 +63,7 @@ module.exports = function (expressApp) {
     );
   });
 
+  // POST Method to write the settings of a topic (light, ventilation, irrigation) to a JSON file
   expressApp.post('/settings/:topic', (req, res) => {
     let topic = req.params.topic;
     let settings_path = '';
@@ -86,6 +95,7 @@ module.exports = function (expressApp) {
     writeSettings(settings_path);
   });
 
+  // GET Method to get the settings of the topic (light, ventilation, irrigation)
   expressApp.get('/settings/:topic', (req, res) => {
     let topic = req.params.topic;
     let settings_path = '';
