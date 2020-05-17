@@ -17,7 +17,8 @@ module.exports = function (expressApp) {
   const ventilation_settings_path = './ventilation_settings.json';
   const irrigation_settings_path = './irrigation_settings.json';
   // Define file path for SQLite database
-  const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
+  //const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
+  const dbPath = './giessomat_db.db';
   // Connect to database
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
@@ -32,7 +33,7 @@ module.exports = function (expressApp) {
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
     db.get(
-      `SELECT * FROM sensor_data ORDER BY Timestamp DESC LIMIT 1`,
+      `SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 1`,
       (err, row) => {
         if (err) {
           return log.error(err.message);
@@ -50,10 +51,11 @@ module.exports = function (expressApp) {
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
     db.all(
-      `SELECT ? FROM sensor_data WHERE datetime(Timestamp) >=datetime('now', '-` +
+      `SELECT timestamp,` +
+        sensor +
+        ` FROM sensor_data WHERE datetime(timestamp) >=datetime('now', '-` +
         hours +
         ` Hour')`,
-      [sensor],
       (err, rows) => {
         if (err) {
           return log.error(err.message);
