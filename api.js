@@ -3,7 +3,7 @@ module.exports = function (expressApp) {
   const SimpleNodeLogger = require('simple-node-logger'),
     opts = {
       //logFilePath: '/home/pi/Giess-o-mat-Webserver/giessomat-apiserver.log',
-      logFilePath: './giessomat-apiserver.log',
+      logFilePath: process.env.API_SERVER_LOG_FILE_PATH,
       timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
     };
 
@@ -17,12 +17,14 @@ module.exports = function (expressApp) {
   //const light_settings_path = '/home/pi/Giess-o-mat-Webserver/light_settings.json';
   //const ventilation_settings_path = '/home/pi/Giess-o-mat-Webserver/ventilation_settings.json';
   //const irrigation_settings_path = '/home/pi/Giess-o-mat-Webserver/irrigation_settings.json';
-  const light_settings_path = './light_settings.json';
-  const ventilation_settings_path = './ventilation_settings.json';
-  const irrigation_settings_path = './irrigation_settings.json';
+  const light_settings_path = process.env.API_SERVER_LIGHT_SETTINGS_PATH;
+  const ventilation_settings_path =
+    process.env.API_SERVER_VENTILATION_SETTINGS_PATH;
+  const irrigation_settings_path =
+    process.env.API_SERVER_IRRIGATION_SETTINGS_PATH;
   // Define file path for SQLite database
   //const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
-  const dbPath = './giessomat_db.db';
+  const dbPath = process.env.API_SERVER_DB_FILE_PATH;
   // Connect to database
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {

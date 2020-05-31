@@ -1,8 +1,12 @@
+// Read .env file
+const dotenv = require('dotenv');
+dotenv.config();
+
 // Set up a logger to write log output to a file
 const SimpleNodeLogger = require('simple-node-logger'),
   opts = {
     //logFilePath: '/home/pi/Giess-o-mat-Webserver/giessomat-apiserver.log',
-    logFilePath: './giessomat-apiserver.log',
+    logFilePath: process.env.API_SERVER_LOG_FILE_PATH,
     timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
   };
 
@@ -10,11 +14,9 @@ log = SimpleNodeLogger.createSimpleFileLogger(opts);
 // Load required dependencies
 const express = require('express');
 var bodyParser = require('body-parser');
-
 log.info('Starting Giess-o-mat API Web Server...');
 // Require api.js
-//let api = require('/home/pi/Giess-o-mat-Webserver/api.js');
-let api = require('./api.js');
+let api = require(__dirname + '/api.js');
 // Set up express app
 let app = express();
 // Configure encoding
