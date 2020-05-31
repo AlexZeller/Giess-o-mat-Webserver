@@ -2,7 +2,8 @@ module.exports = function (expressApp) {
   // Set up a logger to write log output to a file
   const SimpleNodeLogger = require('simple-node-logger'),
     opts = {
-      logFilePath: '/home/pi/Giess-o-mat-Webserver/giessomat-apiserver.log',
+      //logFilePath: '/home/pi/Giess-o-mat-Webserver/giessomat-apiserver.log',
+      logFilePath: './giessomat-apiserver.log',
       timestampFormat: 'YYYY-MM-DD HH:mm:ss.SSS',
     };
 
@@ -13,12 +14,15 @@ module.exports = function (expressApp) {
   const sqlite = require('sqlite3').verbose();
   const fs = require('fs');
   // Define file paths for settings
-  const light_settings_path = '/home/pi/Giess-o-mat-Webserver/light_settings.json';
-  const ventilation_settings_path = '/home/pi/Giess-o-mat-Webserver/ventilation_settings.json';
-  const irrigation_settings_path = '/home/pi/Giess-o-mat-Webserver/irrigation_settings.json';
+  //const light_settings_path = '/home/pi/Giess-o-mat-Webserver/light_settings.json';
+  //const ventilation_settings_path = '/home/pi/Giess-o-mat-Webserver/ventilation_settings.json';
+  //const irrigation_settings_path = '/home/pi/Giess-o-mat-Webserver/irrigation_settings.json';
+  const light_settings_path = './light_settings.json';
+  const ventilation_settings_path = './ventilation_settings.json';
+  const irrigation_settings_path = './irrigation_settings.json';
   // Define file path for SQLite database
   //const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
-  const dbPath = '/home/pi/Giess-o-mat/giessomat_db.db';
+  const dbPath = './giessomat_db.db';
   // Connect to database
   const db = new sqlite.Database(dbPath, (err) => {
     if (err) {
@@ -111,7 +115,11 @@ module.exports = function (expressApp) {
     log.debug(
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
-    let settings_file = require(settings_path);
-    res.json(settings_file);
+    fs.readFile(settings_path, 'utf8', (err, data) => {
+      if (err) {
+        throw err;
+      }
+      res.send(JSON.parse(data));
+    });
   });
 };

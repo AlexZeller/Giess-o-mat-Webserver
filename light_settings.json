@@ -1,7 +1,6 @@
 {
-  "auto": true,
-  "mode": "Zeit- und Helligkeitssteuerung",
-  "start_time": "07:00",
-  "end_time": "21:00",
+  "mode": "Zeitsteuerung",
+  "start_time": "14:11",
+  "end_time": "15:17",
   "lux_threshold": 5000
 }
