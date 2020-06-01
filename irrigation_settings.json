@@ -1,0 +1,8 @@
+{
+    "auto": true,
+    "mode": "Zeitsteuerung",
+    "soilMoist_min": 20,
+    "interval": 1,
+    "start_time": "17:00",
+    "duration": "10"
+}
