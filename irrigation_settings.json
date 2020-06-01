@@ -1,0 +1,10 @@
+{
+  "mode": "Zeit- und Bodenfeuchtesteuerung",
+  "interval": 2,
+  "number_irrigations": 1,
+  "duration_irrigation": 30,
+  "irrigation_time_1": null,
+  "irrigation_time_2": null,
+  "irrigation_time_3": null,
+  "humidity_threshold": 40
+}
