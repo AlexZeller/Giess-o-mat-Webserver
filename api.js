@@ -71,6 +71,50 @@ module.exports = function (expressApp) {
     );
   });
 
+  // GET Method to query the the max value of a  specific sensor for the last x hours and return as JSON
+  expressApp.get('/sensordata/:sensor/:hours/max', (req, res) => {
+    let sensor = req.params.sensor;
+    let hours = req.params.hours;
+    log.debug(
+      'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
+    );
+    db.all(
+      `SELECT timestamp, MAX(` +
+        sensor +
+        `) FROM sensor_data WHERE datetime(timestamp) >=datetime('now', '-` +
+        hours +
+        ` Hour')`,
+      (err, rows) => {
+        if (err) {
+          return log.error(err.message);
+        }
+        res.json(rows);
+      }
+    );
+  });
+
+  // GET Method to query the the min value of a  specific sensor for the last x hours and return as JSON
+  expressApp.get('/sensordata/:sensor/:hours/min', (req, res) => {
+    let sensor = req.params.sensor;
+    let hours = req.params.hours;
+    log.debug(
+      'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
+    );
+    db.all(
+      `SELECT timestamp, MIN(` +
+        sensor +
+        `) FROM sensor_data WHERE datetime(timestamp) >=datetime('now', '-` +
+        hours +
+        ` Hour')`,
+      (err, rows) => {
+        if (err) {
+          return log.error(err.message);
+        }
+        res.json(rows);
+      }
+    );
+  });
+
   // POST Method to write the settings of a topic (light, ventilation, irrigation) to a JSON file
   expressApp.post('/settings/:topic', (req, res) => {
     let topic = req.params.topic;
