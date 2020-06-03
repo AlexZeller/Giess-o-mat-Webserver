@@ -1,6 +1,6 @@
 // Read .env file
 const dotenv = require('dotenv');
-dotenv.config();
+dotenv.config({ path: '/home/pi/Giess-o-mat-Webserver/.env' });
 
 // Set up a logger to write log output to a file
 const SimpleNodeLogger = require('simple-node-logger'),
@@ -16,7 +16,7 @@ const express = require('express');
 var bodyParser = require('body-parser');
 log.info('Starting Giess-o-mat API Web Server...');
 // Require api.js
-let api = require(__dirname + '/api.js');
+let api = require(process.env.API_FILE_PATH);
 // Set up express app
 let app = express();
 // Configure encoding
