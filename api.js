@@ -168,4 +168,20 @@ module.exports = function (expressApp) {
       res.send(JSON.parse(data));
     });
   });
+
+    // GET Method to query the latest sensor data and return as JSON
+    expressApp.get('/log', (req, res) => {
+      log.debug(
+        'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
+      );
+      db.all(
+        `SELECT * FROM log ORDER BY timestamp DESC`,
+        (err, rows) => {
+          if (err) {
+            return log.error(err.message);
+          }
+          res.json(rows);
+        }
+      );
+    });
 };
