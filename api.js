@@ -175,7 +175,7 @@ module.exports = function (expressApp) {
         'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
       );
       db.all(
-        `SELECT * FROM log ORDER BY timestamp DESC`,
+        `SELECT * FROM log ORDER BY timestamp DESC LIMIT 1`,
         (err, rows) => {
           if (err) {
             return log.error(err.message);

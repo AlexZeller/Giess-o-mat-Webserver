@@ -1,8 +1,8 @@
 {
   "mode": "Luftfeuchtesteuerung",
-  "start_time": "20:00",
-  "end_time": "07:15",
+  "start_time": null,
+  "end_time": null,
   "Ta_max": 5000,
   "Rh_max": 85,
-  "mode_ventilation_stop": true
+  "mode_ventilation_stop": false
 }

@@ -1,6 +1,6 @@
 {
-  "mode": "Zeitsteuerung",
-  "start_time": "07:15",
-  "end_time": "19:15",
+  "mode": "Manuell",
+  "start_time": null,
+  "end_time": null,
   "lux_threshold": 5000
 }

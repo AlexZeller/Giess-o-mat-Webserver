@@ -1,10 +1,10 @@
 {
-  "mode": "Zeit- und Bodenfeuchtesteuerung",
-  "timestamp": 1596050714,
+  "mode": "Manuell",
+  "timestamp": 1597249250,
   "interval": 1,
   "number_irrigations": 1,
   "duration_irrigation": 10,
-  "irrigation_time_1": "13:09",
+  "irrigation_time_1": null,
   "irrigation_time_2": null,
   "irrigation_time_3": null,
   "humidity_threshold": 40
