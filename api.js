@@ -39,7 +39,7 @@ module.exports = function (expressApp) {
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
     db.get(
-      `SELECT * FROM sensor_data ORDER BY timestamp DESC LIMIT 1`,
+      `SELECT datetime(timestamp, 'localtime') AS timestamp, air_temp, air_humid, soil_temp, soil_humid, lux, waterlevel FROM sensor_data ORDER BY timestamp DESC LIMIT 1`,
       (err, row) => {
         if (err) {
           return log.error(err.message);
@@ -57,7 +57,7 @@ module.exports = function (expressApp) {
       'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
     );
     db.all(
-      `SELECT timestamp,` +
+      `SELECT datetime(timestamp, 'localtime') AS timestamp,` +
         sensor +
         ` FROM sensor_data WHERE datetime(timestamp) >=datetime('now', '-` +
         hours +
@@ -175,7 +175,7 @@ module.exports = function (expressApp) {
         'GET ' + req.protocol + '://' + req.get('host') + req.originalUrl
       );
       db.all(
-        `SELECT * FROM log ORDER BY timestamp DESC LIMIT 1`,
+        `SELECT datetime(timestamp, 'localtime') AS timestamp, topic, level, message FROM log ORDER BY timestamp DESC LIMIT 100`,
         (err, rows) => {
           if (err) {
             return log.error(err.message);
